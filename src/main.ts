@@ -8,8 +8,12 @@ import { WhoIAmSection } from './components/WhoIAmSection';
 import { ContactSection } from './components/ContactSection';
 import { UniverseFooter } from './components/UniverseFooter';
 import { CookieConsent } from './components/CookieConsent';
+import { SpaceCursor } from './components/SpaceCursor';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Initialize Space-Themed Custom Celestial Orbital Cursor
+  new SpaceCursor();
+
   // 1. Initialize Security Protections (Anti-tamper, Anti-Image-Copying, Right-Click Blocker)
   security.init();
 
