@@ -2221,7 +2221,7 @@ section h2:not(.gdpr-title),
   color: #ffffff;
   padding: 8rem 2rem 4rem;
   overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
 }
 
 .portfolio-universe-inner {
