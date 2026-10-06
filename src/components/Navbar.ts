@@ -72,7 +72,7 @@ export class Navbar {
             </ul>
           </div>
 
-          <a href="#contactSection" class="btn-nav-cta" id="nav-cta-btn">Connect</a>
+          <a href="#contactSection" class="btn-nav-cta" id="nav-cta-btn">Get in Touch</a>
         </div>
       </div>
     `;
@@ -173,7 +173,7 @@ export class Navbar {
     if (whoIAm) whoIAm.textContent = dict.nav.whoIAm;
     if (contact) contact.textContent = dict.nav.contact;
     if (activeCode) activeCode.textContent = currentLang.toUpperCase();
-    if (ctaBtn) ctaBtn.textContent = dict.hero.ctaContact;
+    if (ctaBtn) ctaBtn.textContent = dict.nav.cta;
 
     // Update active highlight in dropdown
     const langOptions = this.navElement.querySelectorAll('.lang-option');

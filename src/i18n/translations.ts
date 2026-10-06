@@ -8,6 +8,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       portfolio: 'Portfolio',
       whoIAm: 'About me',
       contact: 'Contact',
+      cta: 'Get in Touch',
       langSelectAria: 'Select language',
     },
     hero: {
@@ -264,6 +265,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       portfolio: 'Portafolio',
       whoIAm: 'Sobre mí',
       contact: 'Contacto',
+      cta: 'Contactar',
       langSelectAria: 'Seleccionar idioma',
     },
     hero: {
@@ -520,6 +522,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       portfolio: 'Portfolio',
       whoIAm: 'À propos',
       contact: 'Contact',
+      cta: 'Contact',
       langSelectAria: 'Sélectionner la langue',
     },
     hero: {
@@ -776,6 +779,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       portfolio: 'Portfólio',
       whoIAm: 'Sobre mim',
       contact: 'Contato',
+      cta: 'Contato',
       langSelectAria: 'Selecionar idioma',
     },
     hero: {

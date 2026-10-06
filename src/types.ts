@@ -7,6 +7,7 @@ export interface TranslationDictionary {
     portfolio: string;
     whoIAm: string;
     contact: string;
+    cta: string;
     langSelectAria: string;
   };
   hero: {
