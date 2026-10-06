@@ -302,34 +302,33 @@ export class StorytellingSection {
                     </svg>
                   </button>
                 </div>
-              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Floating WhatsApp Transmission Action Bar -->
-        <div class="story-wa-cart-bar" id="storyWaCartBar" aria-hidden="true">
-          <div class="wa-cart-top-bar">
-            <div class="wa-cart-info">
-              <span class="wa-cart-pulse"></span>
-              <span class="wa-cart-label" id="waCartLabel">${story.whatsappCart.title}</span>
-              <strong class="wa-cart-choice" id="waCartChoice"></strong>
+          <!-- Floating / Flow WhatsApp Transmission Action Bar -->
+          <div class="story-wa-cart-bar" id="storyWaCartBar" aria-hidden="true">
+            <div class="wa-cart-top-bar">
+              <div class="wa-cart-info">
+                <span class="wa-cart-pulse"></span>
+                <span class="wa-cart-label" id="waCartLabel">${story.whatsappCart.title}</span>
+                <strong class="wa-cart-choice" id="waCartChoice"></strong>
+              </div>
+              <button type="button" class="btn-wa-dismiss" id="waCartDismissBtn" aria-label="Dismiss selection">
+                ✕
+              </button>
             </div>
-            <button type="button" class="btn-wa-dismiss" id="waCartDismissBtn" aria-label="Dismiss selection">
-              ✕
-            </button>
-          </div>
-          <div class="wa-cart-actions">
-            <a href="#" class="btn-wa-transmit" id="waCartTransmitBtn" target="_blank" rel="noopener noreferrer">
-              <!-- WhatsApp Icon SVG with White Border and White Handset -->
-              <svg class="wa-icon-svg" width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <!-- Outer speech bubble border in white -->
-                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <!-- Inner telephone handset in white -->
-                <path d="M17.47 14.39C17.19 14.25 15.84 13.59 15.59 13.49C15.34 13.4 15.15 13.35 14.97 13.63C14.78 13.91 14.25 14.53 14.09 14.72C13.93 14.91 13.77 14.93 13.5 14.79C13.22 14.65 12.32 14.36 11.26 13.41C10.43 12.67 9.87 11.76 9.71 11.48C9.55 11.2 9.69 11.05 9.83 10.91C9.96 10.78 10.11 10.59 10.24 10.42C10.38 10.26 10.43 10.14 10.52 9.96C10.61 9.77 10.57 9.61 10.5 9.47C10.43 9.33 9.88 7.97 9.65 7.41C9.42 6.87 9.19 6.94 9.03 6.93C8.87 6.92 8.68 6.92 8.49 6.92C8.3 6.92 8 6.99 7.74 7.27C7.49 7.55 6.76 8.23 6.76 9.6C6.76 10.98 7.76 12.31 7.9 12.5C8.04 12.69 9.88 15.52 12.69 16.73C15.5 17.94 15.5 17.54 16.01 17.49C16.52 17.44 17.64 16.82 17.87 16.18C18.1 15.53 18.1 14.98 18.03 14.87C17.96 14.75 17.75 14.53 17.47 14.39Z" fill="#ffffff"/>
-              </svg>
-              <span id="waCartSendText">${story.whatsappCart.sendBtn}</span>
-            </a>
+            <div class="wa-cart-actions">
+              <a href="#" class="btn-wa-transmit" id="waCartTransmitBtn" target="_blank" rel="noopener noreferrer">
+                <!-- WhatsApp Icon SVG with White Border and White Handset -->
+                <svg class="wa-icon-svg" width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <!-- Outer speech bubble border in white -->
+                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Inner telephone handset in white -->
+                  <path d="M17.47 14.39C17.19 14.25 15.84 13.59 15.59 13.49C15.34 13.4 15.15 13.35 14.97 13.63C14.78 13.91 14.25 14.53 14.09 14.72C13.93 14.91 13.77 14.93 13.5 14.79C13.22 14.65 12.32 14.36 11.26 13.41C10.43 12.67 9.87 11.76 9.71 11.48C9.55 11.2 9.69 11.05 9.83 10.91C9.96 10.78 10.11 10.59 10.24 10.42C10.38 10.26 10.43 10.14 10.52 9.96C10.61 9.77 10.57 9.61 10.5 9.47C10.43 9.33 9.88 7.97 9.65 7.41C9.42 6.87 9.19 6.94 9.03 6.93C8.87 6.92 8.68 6.92 8.49 6.92C8.3 6.92 8 6.99 7.74 7.27C7.49 7.55 6.76 8.23 6.76 9.6C6.76 10.98 7.76 12.31 7.9 12.5C8.04 12.69 9.88 15.52 12.69 16.73C15.5 17.94 15.5 17.54 16.01 17.49C16.52 17.44 17.64 16.82 17.87 16.18C18.1 15.53 18.1 14.98 18.03 14.87C17.96 14.75 17.75 14.53 17.47 14.39Z" fill="#ffffff"/>
+                </svg>
+                <span id="waCartSendText">${story.whatsappCart.sendBtn}</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -530,6 +529,12 @@ export class StorytellingSection {
       }
 
       this.waCartBar?.classList.add('visible');
+
+      if (window.innerWidth <= 820 && this.waCartBar) {
+        setTimeout(() => {
+          this.waCartBar?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 120);
+      }
 
       if (broadcast) {
         window.dispatchEvent(new CustomEvent('rogue:service-selected', {
