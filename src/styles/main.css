@@ -548,12 +548,18 @@ img, canvas, .protected-asset {
   animation-delay: 0.85s;
 }
 
-/* Mobile-only text selection prevention in Hero section to preserve reveal spotlight UX */
-@media (max-width: 820px), (pointer: coarse) {
+/* Mobile & Tablet text selection prevention in Hero section (H1, Subtitle, Explore button) to preserve reveal spotlight UX */
+@media (max-width: 1024px), (pointer: coarse) {
   .hero-3d-text-stage,
   .hero-3d-text-stage *,
   .hero-subtitle,
-  .hero-badge-pill {
+  .hero-badge-pill,
+  .hero-cta-group,
+  .btn-hero-primary,
+  .btn-hero-primary *,
+  .btn-hero-secondary,
+  .btn-hero-secondary *,
+  .hero-scroll-indicator {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
