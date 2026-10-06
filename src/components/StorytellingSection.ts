@@ -604,7 +604,7 @@ export class StorytellingSection {
   private renderScrollState(progress: number): void {
     if (!this.imageCard) return;
 
-    const vW = window.innerWidth;
+    const vW = this.sectionElement.clientWidth || window.innerWidth;
     const vH = window.innerHeight;
     const isMobile = vW <= 820;
     const isTablet = vW > 820 && vW <= 1024;
@@ -620,8 +620,8 @@ export class StorytellingSection {
     const P_REACH_HEIGHT = isMobileOrTablet ? 0.072 : 0.14;
     const P_REACH_WIDTH = isMobileOrTablet ? 0.216 : 0.336;
     const chaosEnd = isMobileOrTablet ? 0.096 : 0.14;
-    const P_SERVICES_START = isMobileOrTablet ? 0.12 : 0.20;
-    const P_SERVICES_SPAN = isMobileOrTablet ? 0.17 : 0.25;
+    const P_SERVICES_START = isMobileOrTablet ? 0.12 : 0.22;
+    const P_SERVICES_SPAN = isMobileOrTablet ? 0.17 : 0.24;
     // Mobile exit transition is 20% shorter (starts at 0.745 instead of 0.68, reducing exit span from 0.32 to 0.255)
     const P_EXIT_START = isMobile ? 0.745 : isTablet ? 0.68 : 0.72;
 
@@ -654,13 +654,13 @@ export class StorytellingSection {
       const ease2 = this.easeInOutCubic(p2);
 
       currentH = vH; // LOCKED TO 100% of viewport height (top and bottom of web)
-      currentW = midCardW + (vW - midCardW) * ease2; // Expands horizontally to 100vw
+      currentW = midCardW + (vW - midCardW) * ease2; // Expands horizontally to 100% of viewport
       borderRadius = Math.max(0, 8 * (1 - ease2));
       borderAlpha = Math.max(0, 0.12 * (1 - ease2));
       shadowAlpha = Math.max(0, 0.60 * (1 - ease2));
-      shadowSpread = Math.max(0, 30 * (1 - ease2));
+      shadowSpread = Math.max(30, 80 * (1 - ease2));
     } else {
-      // Phase 3: Fully immersive 100vw x 100vh
+      // Phase 3: Fully immersive 100% width x 100vh
       currentH = vH;
       currentW = vW;
       borderRadius = 0;
@@ -671,7 +671,7 @@ export class StorytellingSection {
 
     // Apply calculated dimensions to container
     if (progress >= P_REACH_WIDTH) {
-      this.imageCard.style.width = '100vw';
+      this.imageCard.style.width = '100%';
       this.imageCard.style.height = '100%';
       this.imageCard.style.borderRadius = '0px';
       this.imageCard.style.borderColor = 'transparent';
