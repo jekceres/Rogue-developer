@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Fondo: Cuadrado negro puro -->
+  <rect width="512" height="512" fill="#000000"/>
+  
+  <!-- Ícono / Silueta de cohete en blanco en el centro apuntando 45º arriba a la derecha -->
+  <g transform="rotate(45 256 256)" fill="#ffffff">
+    <!-- Tobera / Propulsor del motor -->
+    <path d="M 234 322 L 226 352 L 286 352 L 278 322 Z"/>
+
+    <!-- Aleta estabilizadora izquierda -->
+    <path d="M 204 220 C 180 242 142 295 134 340 C 132 352 146 360 156 354 C 182 342 198 332 206 310 Z"/>
+
+    <!-- Aleta estabilizadora derecha -->
+    <path d="M 308 220 C 332 242 370 295 378 340 C 380 352 366 360 356 354 C 330 342 314 332 306 310 Z"/>
+
+    <!-- Fuselaje aerodinámico principal -->
+    <path d="M 256 72 C 295 132 314 205 308 322 C 286 330 226 330 204 322 C 198 205 217 132 256 72 Z"/>
+
+    <!-- Ojo de buey / Ventana circular central (recorte negro que transparenta el espacio) -->
+    <circle cx="256" cy="178" r="30" fill="#000000"/>
+    <circle cx="256" cy="178" r="21" fill="#ffffff" opacity="0.25"/>
+  </g>
+</svg>
