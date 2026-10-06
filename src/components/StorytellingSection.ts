@@ -379,10 +379,12 @@ export class StorytellingSection {
   }
 
   private bindEvents(): void {
-    // 1. Scroll tracking with immediate rendering
+    // 1. Frictionless scroll tracking coordinated with requestAnimationFrame
     this.onScrollHandler = () => {
       this.updateScrollProgress();
-      this.renderScrollState(this.targetProgress);
+      if (!this.animFrameId) {
+        this.startLoop();
+      }
     };
     window.addEventListener('scroll', this.onScrollHandler, { passive: true });
 
@@ -406,15 +408,21 @@ export class StorytellingSection {
     this.onResizeHandler = () => {
       this.handleResize();
       this.updateScrollProgress();
+      if (!this.animFrameId) {
+        this.startLoop();
+      }
     };
     window.addEventListener('resize', this.onResizeHandler);
 
-    // 4. Intersection Observer to sleep RAF when completely off-screen
+    // 4. Intersection Observer to wake/sleep RAF loop when section is near viewport
     this.intersectionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         this.isVisible = entry.isIntersecting;
+        if (this.isVisible && !this.animFrameId) {
+          this.startLoop();
+        }
       });
-    }, { rootMargin: '200px 0px' });
+    }, { rootMargin: '300px 0px' });
     this.intersectionObserver.observe(this.sectionElement);
 
     // 5. Service Card Interactivity
@@ -547,23 +555,31 @@ export class StorytellingSection {
   }
 
   private startLoop(): void {
+    if (this.animFrameId) return;
+
     const tick = () => {
-      // Lerp progress for ultra-silky fluid motion
-      // On mobile devices, increase lerp responsiveness so scrollytelling directly tracks thumb swipes
+      // Lerp progress for responsive fluid motion
       const isMobile = window.innerWidth <= 820;
-      const lerpSpeed = isMobile ? 0.35 : 0.20;
+      const lerpSpeed = isMobile ? 0.45 : 0.35;
       const pDiff = this.targetProgress - this.currentProgress;
+
       if (Math.abs(pDiff) > 0.0001) {
         this.currentProgress += pDiff * lerpSpeed;
       } else {
         this.currentProgress = this.targetProgress;
       }
 
-      // Smoothly update visual state on every frame
+      // Smoothly update visual state on each frame
       this.renderScrollState(this.currentProgress);
 
       if (this.isVisible) {
         this.renderStarfield();
+      }
+
+      // If progress has settled and section is outside the viewport, enter low-power sleep mode
+      if (Math.abs(pDiff) <= 0.0001 && !this.isVisible) {
+        this.animFrameId = null;
+        return;
       }
 
       this.animFrameId = requestAnimationFrame(tick);
@@ -574,14 +590,11 @@ export class StorytellingSection {
 
   /**
    * Smoothly coordinates the 3-phase cinematic storytelling:
-   * Desktop:
-   *   Phase 1 (0.00 -> 0.36): Small 9:16 portrait card grows vertically until height touches 100vh.
-   *   Phase 2 (0.36 -> 0.68): Height locked to 100vh, container expands horizontally to 100vw.
-   *   Phase 3 (0.68 -> 1.00): Fully immersive wallpaper + floating services reveal.
-   * Mobile (Optimized for Ergonomics & Quick Value Discovery):
-   *   Phase 1 (0.00 -> 0.16): Card reaches full screen height quickly; chaos tags vanish cleanly.
-   *   Phase 2 (0.16 -> 0.38): Card reaches 100vw full width within 1 natural thumb flick.
-   *   Phase 3 (0.40 -> 1.00): Service cards glide in swiftly and remain accessible across the rest track.
+   * Both on Desktop and Mobile:
+   *   Phase 1 (0.00 -> 0.10): Card touches top and bottom of screen swiftly (100vh); chaos tags vanish.
+   *   Phase 2 (0.10 -> 0.24): Card expands to 100vw full width.
+   *   Phase 3 (0.14 -> 1.00): Service cards emerge immediately as expansion happens, reaching 100% opacity
+   *                           by 0.28-0.32 so the user discovers all solutions fast without waiting.
    */
   private renderScrollState(progress: number): void {
     if (!this.imageCard) return;
@@ -594,12 +607,12 @@ export class StorytellingSection {
     const initCardW = Math.min(300, vW * (isMobile ? 0.56 : 0.25));
     const initCardH = initCardW * (16 / 9);
 
-    // Dynamic phase milestones calibrated for device viewport & ergonomics
-    const P_REACH_HEIGHT = isMobile ? 0.16 : 0.36;
-    const P_REACH_WIDTH = isMobile ? 0.38 : 0.68;
-    const P_SERVICES_START = isMobile ? 0.40 : 0.68;
-    const P_SERVICES_SPAN = isMobile ? 0.24 : 0.28;
-    const chaosEnd = isMobile ? 0.18 : 0.32;
+    // Dynamic phase milestones calibrated for rapid discovery, agility & zero delay
+    const P_REACH_HEIGHT = isMobile ? 0.06 : 0.10;
+    const P_REACH_WIDTH = isMobile ? 0.18 : 0.24;
+    const P_SERVICES_START = isMobile ? 0.10 : 0.14;
+    const P_SERVICES_SPAN = isMobile ? 0.14 : 0.18;
+    const chaosEnd = isMobile ? 0.08 : 0.10;
 
     // Intermediate dimensions at P_REACH_HEIGHT (when height touches top & bottom of the web)
     const midCardH = vH;
