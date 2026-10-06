@@ -602,22 +602,26 @@ export class StorytellingSection {
     const vW = window.innerWidth;
     const vH = window.innerHeight;
     const isMobile = vW <= 820;
+    const isTablet = vW > 820 && vW <= 1024;
+    const isMobileOrTablet = vW <= 1024;
 
     // 1. Initial dimensions at scroll = 0 (9:16 portrait ratio)
-    const initCardW = Math.min(300, vW * (isMobile ? 0.56 : 0.25));
+    const initCardW = Math.min(300, vW * (isMobile ? 0.56 : isTablet ? 0.38 : 0.25));
     const initCardH = initCardW * (16 / 9);
 
-    // Dynamic phase milestones calibrated for rapid discovery, agility & zero delay
-    const P_REACH_HEIGHT = isMobile ? 0.06 : 0.10;
-    const P_REACH_WIDTH = isMobile ? 0.18 : 0.24;
-    const P_SERVICES_START = isMobile ? 0.10 : 0.14;
-    const P_SERVICES_SPAN = isMobile ? 0.14 : 0.18;
-    const chaosEnd = isMobile ? 0.08 : 0.10;
+    // Dynamic phase milestones:
+    // Exactly 40% slower expansion until covering whole div on Desktop (0.10->0.14 height, 0.24->0.336 width)
+    // Exactly 20% slower expansion until covering whole div on Mobile & Tablet (0.06->0.072 height, 0.18->0.216 width)
+    const P_REACH_HEIGHT = isMobileOrTablet ? 0.072 : 0.14;
+    const P_REACH_WIDTH = isMobileOrTablet ? 0.216 : 0.336;
+    const chaosEnd = isMobileOrTablet ? 0.096 : 0.14;
+    const P_SERVICES_START = isMobileOrTablet ? 0.12 : 0.20;
+    const P_SERVICES_SPAN = isMobileOrTablet ? 0.17 : 0.25;
 
     // Intermediate dimensions at P_REACH_HEIGHT (when height touches top & bottom of the web)
     const midCardH = vH;
     const portraitWAtFullH = vH * (9 / 16);
-    const midCardW = Math.min(vW * (isMobile ? 0.82 : 0.92), portraitWAtFullH);
+    const midCardW = Math.min(vW * (isMobile ? 0.82 : isTablet ? 0.88 : 0.92), portraitWAtFullH);
 
     let currentW: number;
     let currentH: number;

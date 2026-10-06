@@ -1749,6 +1749,10 @@ section h2:not(.gdpr-title),
    Responsive Breakpoints
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .story-section {
+    min-height: 180vh;
+  }
+
   .story-services-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
