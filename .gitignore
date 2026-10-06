@@ -27,3 +27,5 @@ verify_transit_test.cjs
 # OS metadata
 .DS_Store
 Thumbs.db
+
+.vercel
