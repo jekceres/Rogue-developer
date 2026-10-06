@@ -197,12 +197,10 @@ export class PortfolioUniverseSection {
           <h3 class="portfolio-cta-heading" id="portfolioCtaHeadline">${p.ctaHeadline}</h3>
           
           <a 
-            href="https://wa.me/584242905469?text=Hello!%20I%20explored%20your%20Portfolio%20Universe%20and%20would%20like%20to%20discuss%20a%20project." 
+            href="#contactSection" 
             class="btn-portfolio-touch" 
             id="portfolioCtaBtn"
-            target="_blank" 
-            rel="noopener noreferrer"
-            aria-label="Get in touch via WhatsApp"
+            aria-label="Get in touch"
           >
             <span class="btn-touch-text" id="portfolioCtaBtnText">${p.ctaButton}</span>
             <span class="btn-touch-glow" aria-hidden="true"></span>
@@ -349,6 +347,16 @@ export class PortfolioUniverseSection {
         card.style.setProperty('--mouse-tilt-y', '0deg');
         card.style.setProperty('--glare-opacity', '0');
       });
+    });
+
+    // Smooth scroll navigation to Contact Section
+    const ctaBtn = this.container.querySelector('#portfolioCtaBtn');
+    ctaBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById('contactSection');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   }
 
