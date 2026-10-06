@@ -160,9 +160,28 @@ export class RevealSpotlight {
     this.animFrameId = requestAnimationFrame(update);
   }
 
+  private getSpotlightParams(): { radius: number; innerSolid: number; feather1: number; feather2: number } {
+    const isMobile = window.innerWidth <= 820;
+    if (isMobile) {
+      // 35% smaller on mobile: 260 * 0.65 = 169px
+      return {
+        radius: 169,
+        innerSolid: 91,
+        feather1: 133,
+        feather2: 159,
+      };
+    }
+    return {
+      radius: this.radius,
+      innerSolid: 140,
+      feather1: 205,
+      feather2: 245,
+    };
+  }
+
   private applyMask(x: number, y: number): void {
-    // 260px radius spotlight with soft feathered glowing gradient edge and explicit transparent boundary
-    const maskGradient = `radial-gradient(circle ${this.radius}px at ${x.toFixed(2)}px ${y.toFixed(2)}px, black 0%, black 140px, rgba(0, 0, 0, 0.7) 205px, rgba(0, 0, 0, 0.25) 245px, transparent ${this.radius}px, transparent 100%)`;
+    const { radius, innerSolid, feather1, feather2 } = this.getSpotlightParams();
+    const maskGradient = `radial-gradient(circle ${radius}px at ${x.toFixed(2)}px ${y.toFixed(2)}px, black 0%, black ${innerSolid}px, rgba(0, 0, 0, 0.7) ${feather1}px, rgba(0, 0, 0, 0.25) ${feather2}px, transparent ${radius}px, transparent 100%)`;
 
     this.revealContainer.style.maskImage = maskGradient;
     this.revealContainer.style.webkitMaskImage = maskGradient;
