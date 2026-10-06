@@ -622,7 +622,8 @@ export class StorytellingSection {
     const chaosEnd = isMobileOrTablet ? 0.096 : 0.14;
     const P_SERVICES_START = isMobileOrTablet ? 0.12 : 0.20;
     const P_SERVICES_SPAN = isMobileOrTablet ? 0.17 : 0.25;
-    const P_EXIT_START = isMobileOrTablet ? 0.68 : 0.72;
+    // Mobile exit transition is 20% shorter (starts at 0.745 instead of 0.68, reducing exit span from 0.32 to 0.255)
+    const P_EXIT_START = isMobile ? 0.745 : isTablet ? 0.68 : 0.72;
 
     // Intermediate dimensions at P_REACH_HEIGHT (when height touches top & bottom of the web)
     const midCardH = vH;
