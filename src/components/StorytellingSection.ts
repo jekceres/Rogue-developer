@@ -549,9 +549,12 @@ export class StorytellingSection {
   private startLoop(): void {
     const tick = () => {
       // Lerp progress for ultra-silky fluid motion
+      // On mobile devices, increase lerp responsiveness so scrollytelling directly tracks thumb swipes
+      const isMobile = window.innerWidth <= 820;
+      const lerpSpeed = isMobile ? 0.35 : 0.20;
       const pDiff = this.targetProgress - this.currentProgress;
       if (Math.abs(pDiff) > 0.0001) {
-        this.currentProgress += pDiff * 0.2;
+        this.currentProgress += pDiff * lerpSpeed;
       } else {
         this.currentProgress = this.targetProgress;
       }
@@ -571,11 +574,14 @@ export class StorytellingSection {
 
   /**
    * Smoothly coordinates the 3-phase cinematic storytelling:
-   * Phase 1 (0.00 -> 0.36): Small 9:16 portrait card grows vertically until its height touches the top & bottom of the screen (100vh).
-   *                         Chaos notes fade & drift out gracefully.
-   * Phase 2 (0.36 -> 0.68): Height is locked to 100vh. The container expands horizontally from 9:16 width out to 100vw,
-   *                         revealing more of the panoramic wallpaper on the sides without zooming in on the image.
-   * Phase 3 (0.68 -> 1.00): Fully immersive wallpaper (100vw x 100vh) + 3 floating services appear with zero-gravity levitation & WhatsApp cart.
+   * Desktop:
+   *   Phase 1 (0.00 -> 0.36): Small 9:16 portrait card grows vertically until height touches 100vh.
+   *   Phase 2 (0.36 -> 0.68): Height locked to 100vh, container expands horizontally to 100vw.
+   *   Phase 3 (0.68 -> 1.00): Fully immersive wallpaper + floating services reveal.
+   * Mobile (Optimized for Ergonomics & Quick Value Discovery):
+   *   Phase 1 (0.00 -> 0.16): Card reaches full screen height quickly; chaos tags vanish cleanly.
+   *   Phase 2 (0.16 -> 0.38): Card reaches 100vw full width within 1 natural thumb flick.
+   *   Phase 3 (0.40 -> 1.00): Service cards glide in swiftly and remain accessible across the rest track.
    */
   private renderScrollState(progress: number): void {
     if (!this.imageCard) return;
@@ -588,9 +594,12 @@ export class StorytellingSection {
     const initCardW = Math.min(300, vW * (isMobile ? 0.56 : 0.25));
     const initCardH = initCardW * (16 / 9);
 
-    // Phase milestones
-    const P_REACH_HEIGHT = 0.36;
-    const P_REACH_WIDTH = 0.68;
+    // Dynamic phase milestones calibrated for device viewport & ergonomics
+    const P_REACH_HEIGHT = isMobile ? 0.16 : 0.36;
+    const P_REACH_WIDTH = isMobile ? 0.38 : 0.68;
+    const P_SERVICES_START = isMobile ? 0.40 : 0.68;
+    const P_SERVICES_SPAN = isMobile ? 0.24 : 0.28;
+    const chaosEnd = isMobile ? 0.18 : 0.32;
 
     // Intermediate dimensions at P_REACH_HEIGHT (when height touches top & bottom of the web)
     const midCardH = vH;
@@ -653,11 +662,11 @@ export class StorytellingSection {
       this.imageCard.style.transform = 'none';
     }
 
-    // 2. Organized Chaos Text Elements Animate-Out (Phase 1: 0.00 to 0.32)
+    // 2. Organized Chaos Text Elements Animate-Out (exits earlier on mobile so services can emerge)
     if (this.chaosContainer) {
-      const chaosProgress = Math.max(0, Math.min(1, progress / 0.32));
+      const chaosProgress = Math.max(0, Math.min(1, progress / chaosEnd));
       const chaosAlpha = Math.max(0, 1 - chaosProgress * 1.25);
-      const chaosDrift = chaosProgress * 90;
+      const chaosDrift = chaosProgress * (isMobile ? 55 : 90);
 
       const item1 = this.chaosContainer.querySelector('.chaos-item-1') as HTMLElement | null;
       const item2 = this.chaosContainer.querySelector('.chaos-item-2') as HTMLElement | null;
@@ -684,9 +693,9 @@ export class StorytellingSection {
       this.chaosContainer.style.pointerEvents = chaosAlpha < 0.1 ? 'none' : 'auto';
     }
 
-    // 3. Final Immersive State & Floating Services Entrance (Phase 3: progress 0.68 -> 1.00)
+    // 3. Final Immersive State & Floating Services Entrance (Phase 3)
     if (this.servicesContainer) {
-      const servicesProgress = Math.max(0, Math.min(1, (progress - 0.68) / 0.28));
+      const servicesProgress = Math.max(0, Math.min(1, (progress - P_SERVICES_START) / P_SERVICES_SPAN));
       const servicesAlpha = this.easeInOutCubic(servicesProgress);
       const maxShift = isMobile ? 18 : 45;
       const servicesTranslateY = (1 - servicesAlpha) * maxShift;
@@ -699,7 +708,7 @@ export class StorytellingSection {
     // 4. Subtle dark overlay on background when services are revealed to maximize readability
     const overlay = this.sectionElement.querySelector('#storyImageOverlay') as HTMLElement | null;
     if (overlay) {
-      const dimFactor = Math.max(0, Math.min(0.55, (progress - 0.68) * 2.2));
+      const dimFactor = Math.max(0, Math.min(0.55, (progress - P_SERVICES_START) * (isMobile ? 2.8 : 2.2)));
       overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimFactor.toFixed(3)})`;
     }
 
@@ -707,7 +716,7 @@ export class StorytellingSection {
     if (this.waCartBar && this.selectedServiceKey) {
       const rect = this.sectionElement.getBoundingClientRect();
       const isInsideServicesSection = rect.bottom > 80 && rect.top < window.innerHeight;
-      if (progress >= 0.68 && isInsideServicesSection) {
+      if (progress >= P_SERVICES_START && isInsideServicesSection) {
         this.waCartBar.classList.add('visible');
       } else {
         this.waCartBar.classList.remove('visible');

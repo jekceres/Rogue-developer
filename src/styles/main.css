@@ -632,6 +632,15 @@ img, canvas, .protected-asset {
   box-shadow: 0 0 35px rgba(255, 255, 255, 0.5);
 }
 
+.hero-explore-arrow {
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.btn-hero-primary:hover .hero-explore-arrow {
+  transform: translateY(3px);
+}
+
 .btn-hero-secondary {
   display: inline-flex;
   align-items: center;
@@ -1774,6 +1783,10 @@ section h2:not(.gdpr-title),
 }
 
 @media (max-width: 820px) {
+  .story-section {
+    min-height: 220vh;
+  }
+
   .story-services-overlay {
     position: absolute;
     inset: 0;
