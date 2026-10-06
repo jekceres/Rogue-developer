@@ -14,6 +14,7 @@ export class RevealSpotlight {
   private onPointerMoveHandler: ((e: PointerEvent) => void) | null = null;
   private onMouseLeaveHandler: ((e: MouseEvent) => void) | null = null;
   private onBlurHandler: (() => void) | null = null;
+  private onTouchStartHandler: ((e: TouchEvent) => void) | null = null;
   private onTouchMoveHandler: ((e: TouchEvent) => void) | null = null;
   private onTouchEndHandler: (() => void) | null = null;
 
@@ -86,36 +87,46 @@ export class RevealSpotlight {
     window.addEventListener('blur', this.onBlurHandler);
 
     // Touch device support
+    const handleTouchCoords = (touch: Touch) => {
+      const rect = this.heroElement.getBoundingClientRect();
+      const isWithinHero = (
+        touch.clientY >= rect.top &&
+        touch.clientY <= rect.bottom &&
+        touch.clientX >= rect.left &&
+        touch.clientX <= rect.right
+      );
+
+      if (isWithinHero) {
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        this.targetX = x;
+        this.targetY = y;
+
+        if (!this.isPointerInside) {
+          this.isPointerInside = true;
+          this.currentX = x;
+          this.currentY = y;
+          this.applyMask(this.currentX, this.currentY);
+          this.revealContainer.style.opacity = '1';
+        }
+      } else {
+        if (this.isPointerInside) {
+          this.isPointerInside = false;
+          this.revealContainer.style.opacity = '0';
+        }
+      }
+    };
+
+    this.onTouchStartHandler = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        handleTouchCoords(e.touches[0]);
+      }
+    };
+
     this.onTouchMoveHandler = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        const rect = this.heroElement.getBoundingClientRect();
-        const isWithinHero = (
-          touch.clientY >= rect.top &&
-          touch.clientY <= rect.bottom &&
-          touch.clientX >= rect.left &&
-          touch.clientX <= rect.right
-        );
-
-        if (isWithinHero) {
-          const x = touch.clientX - rect.left;
-          const y = touch.clientY - rect.top;
-
-          this.targetX = x;
-          this.targetY = y;
-
-          if (!this.isPointerInside) {
-            this.isPointerInside = true;
-            this.currentX = x;
-            this.currentY = y;
-            this.revealContainer.style.opacity = '1';
-          }
-        } else {
-          if (this.isPointerInside) {
-            this.isPointerInside = false;
-            this.revealContainer.style.opacity = '0';
-          }
-        }
+        handleTouchCoords(e.touches[0]);
       }
     };
 
@@ -124,8 +135,10 @@ export class RevealSpotlight {
       this.revealContainer.style.opacity = '0';
     };
 
+    window.addEventListener('touchstart', this.onTouchStartHandler, { passive: true });
     window.addEventListener('touchmove', this.onTouchMoveHandler, { passive: true });
     window.addEventListener('touchend', this.onTouchEndHandler);
+    window.addEventListener('touchcancel', this.onTouchEndHandler);
   }
 
   private startLoop(): void {
@@ -170,11 +183,15 @@ export class RevealSpotlight {
     if (this.onBlurHandler) {
       window.removeEventListener('blur', this.onBlurHandler);
     }
+    if (this.onTouchStartHandler) {
+      window.removeEventListener('touchstart', this.onTouchStartHandler);
+    }
     if (this.onTouchMoveHandler) {
       window.removeEventListener('touchmove', this.onTouchMoveHandler);
     }
     if (this.onTouchEndHandler) {
       window.removeEventListener('touchend', this.onTouchEndHandler);
+      window.removeEventListener('touchcancel', this.onTouchEndHandler);
     }
   }
 }

@@ -61,6 +61,21 @@ export class HeroSection {
         target.scrollIntoView({ behavior: 'smooth' });
       }
     });
+
+    // 6. Prevent text selection and copy on mobile for H1 and Subtitle so reveal spotlight interaction is uninterrupted
+    const preventMobileSelection = (e: Event) => {
+      if (window.innerWidth <= 820 || window.matchMedia('(pointer: coarse)').matches) {
+        e.preventDefault();
+      }
+    };
+
+    const textStage = this.heroElement.querySelector('#hero3DTextContainer');
+    const heroSubtitle = this.heroElement.querySelector('#heroSubtitle');
+
+    textStage?.addEventListener('selectstart', preventMobileSelection);
+    textStage?.addEventListener('copy', preventMobileSelection);
+    heroSubtitle?.addEventListener('selectstart', preventMobileSelection);
+    heroSubtitle?.addEventListener('copy', preventMobileSelection);
   }
 
   private render(): void {
