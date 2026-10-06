@@ -129,6 +129,9 @@ export class SpaceCursor {
       .lang-selector-btn, 
       .lang-dropdown-item, 
       .modal-specimen-close,
+      .btn-modal-close,
+      .btn-modal-visit-site,
+      .btn-modal-dismiss-sec,
       .channel-card,
       .filter-pill,
       .matrix-link

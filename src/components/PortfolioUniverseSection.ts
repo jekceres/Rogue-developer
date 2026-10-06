@@ -28,7 +28,9 @@ interface PortfolioSpecimenConfig {
 
 export class PortfolioUniverseSection {
   private container: HTMLElement;
-  private modal: HTMLDialogElement | null = null;
+  private modal: HTMLElement | null = null;
+  private modalBackdrop: HTMLElement | null = null;
+  private isModalOpen: boolean = false;
   private activeSpecimenKey: string | null = null;
   private observer: IntersectionObserver | null = null;
 
@@ -208,14 +210,17 @@ export class PortfolioUniverseSection {
         </div>
       </div>
 
-      <!-- Native Cinematic Modal for Expanded Specimen Inspection -->
-      <dialog class="portfolio-specimen-modal" id="portfolioSpecimenModal" aria-labelledby="modalSpecimenTitle">
-        <div class="modal-dialog-content" id="modalDialogContent">
-          <!-- Populated dynamically upon clicking a card -->
+      <!-- Cinematic Modal for Expanded Specimen Inspection (Accessible Overlay) -->
+      <div class="portfolio-modal-backdrop" id="portfolioModalBackdrop" aria-hidden="true">
+        <div class="portfolio-specimen-modal" id="portfolioSpecimenModal" role="dialog" aria-modal="true" aria-labelledby="modalSpecimenTitle">
+          <div class="modal-dialog-content" id="modalDialogContent">
+            <!-- Populated dynamically upon clicking a card -->
+          </div>
         </div>
-      </dialog>
+      </div>
     `;
 
+    this.modalBackdrop = this.container.querySelector('#portfolioModalBackdrop');
     this.modal = this.container.querySelector('#portfolioSpecimenModal');
   }
 
@@ -361,27 +366,20 @@ export class PortfolioUniverseSection {
   }
 
   private setupModal(): void {
-    if (!this.modal) return;
+    if (!this.modalBackdrop) return;
 
-    // Light dismiss on backdrop click
-    this.modal.addEventListener('click', (e: MouseEvent) => {
-      const rect = this.modal?.getBoundingClientRect();
-      if (!rect) return;
-      const isInDialog =
-        rect.top <= e.clientY &&
-        e.clientY <= rect.top + rect.height &&
-        rect.left <= e.clientX &&
-        e.clientX <= rect.left + rect.width;
-      
-      // If clicked on backdrop, close
-      if (!isInDialog || e.target === this.modal) {
+    // Light dismiss on backdrop click (clicking outside the modal card)
+    this.modalBackdrop.addEventListener('click', (e: MouseEvent) => {
+      if (e.target === this.modalBackdrop) {
         this.closeModal();
       }
     });
 
-    // Handle native cancel event (Esc key)
-    this.modal.addEventListener('cancel', () => {
-      this.closeModal();
+    // Handle Esc key to close modal
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && this.isModalOpen) {
+        this.closeModal();
+      }
     });
   }
 
@@ -476,14 +474,17 @@ export class PortfolioUniverseSection {
     contentEl.querySelector('#btnModalClose')?.addEventListener('click', () => this.closeModal());
     contentEl.querySelector('#btnModalDismissSec')?.addEventListener('click', () => this.closeModal());
 
-    // Show modal
-    this.modal.showModal();
+    // Show modal overlay
+    this.isModalOpen = true;
+    this.modalBackdrop?.classList.add('is-open');
+    this.modalBackdrop?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
   private closeModal(): void {
-    if (!this.modal) return;
-    this.modal.close();
+    this.isModalOpen = false;
+    this.modalBackdrop?.classList.remove('is-open');
+    this.modalBackdrop?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     this.activeSpecimenKey = null;
   }
@@ -555,7 +556,7 @@ export class PortfolioUniverseSection {
     });
 
     // If modal is open, re-render it with new language
-    if (this.modal?.open && this.activeSpecimenKey) {
+    if (this.isModalOpen && this.activeSpecimenKey) {
       this.openSpecimenModal(this.activeSpecimenKey);
     }
   }
@@ -789,6 +790,8 @@ export class PortfolioUniverseSection {
     }
     this.sectionObserver?.disconnect();
     this.observer?.disconnect();
-    this.modal?.close();
+    this.closeModal();
+    this.modal = null;
+    this.modalBackdrop = null;
   }
 }
