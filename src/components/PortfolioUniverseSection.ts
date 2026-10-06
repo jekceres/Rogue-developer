@@ -202,7 +202,7 @@ export class PortfolioUniverseSection {
             href="#contactSection" 
             class="btn-portfolio-touch" 
             id="portfolioCtaBtn"
-            aria-label="Get in touch"
+            aria-label="${p.ctaButton.replace(/[^\w\s\u00C0-\u00FF]/gi, '').trim()}"
           >
             <span class="btn-touch-text" id="portfolioCtaBtnText">${p.ctaButton}</span>
             <span class="btn-touch-glow" aria-hidden="true"></span>
@@ -537,7 +537,9 @@ export class PortfolioUniverseSection {
     if (ctaSubEl) ctaSubEl.textContent = p.ctaSubtitle;
 
     const ctaBtnText = this.container.querySelector('#portfolioCtaBtnText');
+    const ctaBtn = this.container.querySelector('#portfolioCtaBtn');
     if (ctaBtnText) ctaBtnText.textContent = p.ctaButton;
+    if (ctaBtn) ctaBtn.setAttribute('aria-label', p.ctaButton.replace(/[^\w\s\u00C0-\u00FF]/gi, '').trim());
 
     // Update each card's localized text
     this.specimens.forEach((specimen) => {

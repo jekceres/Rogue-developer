@@ -93,7 +93,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       modalSector: 'Sector Telemetry',
       ctaHeadline: 'Ready to build your digital world?',
       ctaSubtitle: 'Let’s craft an engineered web architecture that defines your market and commands authority.',
-      ctaButton: 'Get in touch →',
+      ctaButton: 'Get in touch ↗',
       items: {
         alfombras: {
           name: 'La Tienda de las Alfombras',
@@ -314,9 +314,9 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
         },
       },
       whatsappCart: {
-        title: 'Selected service',
-        sendBtn: 'Request service via WhatsApp',
-        sendBtnMobile: 'Request service via WhatsApp',
+        title: 'Servicio Seleccionado',
+        sendBtn: 'Solicitar servicio por WhatsApp',
+        sendBtnMobile: 'Solicitar servicio por WhatsApp',
         dismiss: 'Quitar Selección',
       },
     },
@@ -350,7 +350,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       modalSector: 'Telemetría de Sector',
       ctaHeadline: '¿Listo para construir tu mundo digital?',
       ctaSubtitle: 'Diseñemos una arquitectura web de vanguardia que consolide tu liderazgo en la industria.',
-      ctaButton: 'Get in touch →',
+      ctaButton: 'Ponerse en contacto ↗',
       items: {
         alfombras: {
           name: 'La Tienda de las Alfombras',
@@ -437,7 +437,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       bioP1: 'Desarrollador web front-end con más de 7 años transformando las necesidades de empresas en plataformas y sitios web ultrarrápidos, seguros y de alto rendimiento.',
       bioP2: 'Empiezo desde el problema del negocio, no desde la tecnología: ¿qué necesita este cliente vender, automatizar o gestionar, y cuál es la solución digital más simple y eficiente para lograrlo?',
       bioP3: 'Lead developer en una agencia de Barcelona gestionando más de 150 sitios en producción, cofundador de la app de salud Provitared (conectando pacientes con proveedores para distribuir más de 45,000 medicamentos durante una escasez crítica del 85%), y desarrollador independiente especializado en Astro y React.',
-      skillsHeader: 'TECHNICAL SKILLS',
+      skillsHeader: 'HABILIDADES TÉCNICAS',
       skillsSub: 'Competencias tecnológicas clasificadas por dominio arquitectónico.',
       modules: {
         frontend: {
@@ -607,7 +607,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       modalSector: 'Télémétrie de Secteur',
       ctaHeadline: 'Prêt à bâtir votre monde numérique ?',
       ctaSubtitle: 'Concevons une architecture web de pointe qui impose votre leadership sur votre marché.',
-      ctaButton: 'Get in touch →',
+      ctaButton: 'Prendre contact ↗',
       items: {
         alfombras: {
           name: 'La Tienda de las Alfombras',
@@ -694,7 +694,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       bioP1: 'Développeur front-end avec plus de 7 ans d\'expertise transformant les enjeux d\'entreprises en plateformes web ultra-rapides, sécurisées et résilientes.',
       bioP2: 'Je pars du problème commercial, pas de la technologie : de quoi cette entreprise a-t-elle besoin pour vendre, automatiser ou gérer, et quelle est la solution la plus simple et performante ?',
       bioP3: 'Développeur principal dans une agence barcelonaise supervisant plus de 150 sites, cofondateur de l\'application e-santé Provitared (45 000+ médicaments distribués), et ingénieur indépendant expert Astro et React.',
-      skillsHeader: 'TECHNICAL SKILLS',
+      skillsHeader: 'COMPÉTENCES TECHNIQUES',
       skillsSub: 'Compétences technologiques réparties par domaine d\'ingénierie.',
       modules: {
         frontend: {
@@ -864,7 +864,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       modalSector: 'Telemetria de Setor',
       ctaHeadline: 'Pronto para construir seu mundo digital?',
       ctaSubtitle: 'Vamos projetar uma arquitetura web de elite que lidere seu mercado com impacto absoluto.',
-      ctaButton: 'Get in touch →',
+      ctaButton: 'Entrar em contato ↗',
       items: {
         alfombras: {
           name: 'La Tienda de las Alfombras',
@@ -951,7 +951,7 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       bioP1: 'Desenvolvedor front-end com mais de 7 anos de experiência transformando necessidades corporativas em plataformas web rápidas, seguras e de alto impacto.',
       bioP2: 'Inicio pelo problema do negócio, não pela tecnologia: o que este cliente precisa vender, automatizar ou gerenciar, e qual é a solução digital mais simples e eficiente?',
       bioP3: 'Desenvolvedor líder em agência de Barcelona gerenciando mais de 150 sites, cofundador da plataforma Provitared (distribuindo mais de 45.000 medicamentos essenciais), e especialista independente em Astro e React.',
-      skillsHeader: 'TECHNICAL SKILLS',
+      skillsHeader: 'HABILIDADES TÉCNICAS',
       skillsSub: 'Competências técnicas organizadas por domínio de engenharia.',
       modules: {
         frontend: {

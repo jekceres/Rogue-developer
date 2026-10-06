@@ -898,10 +898,12 @@ export class StorytellingSection {
     const waCartLabel = this.sectionElement.querySelector('#waCartLabel');
     const waCartSendText = this.sectionElement.querySelector('#waCartSendText');
     const waCartSendTextMobile = this.sectionElement.querySelector('#waCartSendTextMobile');
+    const waCartDismissBtn = this.sectionElement.querySelector('#waCartDismissBtn');
 
     if (waCartLabel) waCartLabel.textContent = story.whatsappCart.title;
     if (waCartSendText) waCartSendText.textContent = story.whatsappCart.sendBtn;
-    if (waCartSendTextMobile) waCartSendTextMobile.textContent = story.whatsappCart.sendBtnMobile || 'Send';
+    if (waCartSendTextMobile) waCartSendTextMobile.textContent = story.whatsappCart.sendBtnMobile || story.whatsappCart.sendBtn;
+    if (waCartDismissBtn) waCartDismissBtn.setAttribute('aria-label', story.whatsappCart.dismiss || 'Dismiss selection');
 
     // Refresh active WhatsApp link if already chosen
     if (this.selectedServiceKey) {
