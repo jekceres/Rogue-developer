@@ -622,6 +622,7 @@ export class StorytellingSection {
     const chaosEnd = isMobileOrTablet ? 0.096 : 0.14;
     const P_SERVICES_START = isMobileOrTablet ? 0.12 : 0.20;
     const P_SERVICES_SPAN = isMobileOrTablet ? 0.17 : 0.25;
+    const P_EXIT_START = isMobileOrTablet ? 0.68 : 0.72;
 
     // Intermediate dimensions at P_REACH_HEIGHT (when height touches top & bottom of the web)
     const midCardH = vH;
@@ -715,30 +716,45 @@ export class StorytellingSection {
       this.chaosContainer.style.pointerEvents = chaosAlpha < 0.1 ? 'none' : 'auto';
     }
 
-    // 3. Final Immersive State & Floating Services Entrance (Phase 3)
-    if (this.servicesContainer) {
-      const servicesProgress = Math.max(0, Math.min(1, (progress - P_SERVICES_START) / P_SERVICES_SPAN));
-      const servicesAlpha = this.easeInOutCubic(servicesProgress);
-      const maxShift = isMobile ? 18 : 45;
-      const servicesTranslateY = (1 - servicesAlpha) * maxShift;
+    // 3. Floating Services Entrance (Phase 3) and Seamless Cosmic Exit into Portfolio Universe (Phase 4)
+    const entranceProgress = Math.max(0, Math.min(1, (progress - P_SERVICES_START) / P_SERVICES_SPAN));
+    const entranceAlpha = this.easeInOutCubic(entranceProgress);
+    const maxEntranceShift = isMobile ? 18 : 45;
+    const entranceTranslateY = (1 - entranceAlpha) * maxEntranceShift;
 
-      this.servicesContainer.style.opacity = servicesAlpha.toFixed(3);
-      this.servicesContainer.style.transform = `translateY(${servicesTranslateY.toFixed(1)}px)`;
-      this.servicesContainer.style.pointerEvents = servicesAlpha > 0.4 ? 'auto' : 'none';
+    // Exit transition as user scrolls down towards Portfolio Universe
+    let exitFactor = 0;
+    let exitTranslateY = 0;
+    if (progress > P_EXIT_START) {
+      const exitProgress = Math.min(1, (progress - P_EXIT_START) / (1.0 - P_EXIT_START));
+      exitFactor = this.easeInOutCubic(exitProgress);
+      exitTranslateY = -exitFactor * (isMobile ? 32 : 52); // floats upward into the next sector
     }
 
-    // 4. Subtle dark overlay on background when services are revealed to maximize readability
+    const finalServicesAlpha = Math.max(0, entranceAlpha * (1 - exitFactor));
+    const finalServicesTranslateY = entranceTranslateY + exitTranslateY;
+
+    if (this.servicesContainer) {
+      this.servicesContainer.style.opacity = finalServicesAlpha.toFixed(3);
+      this.servicesContainer.style.transform = `translateY(${finalServicesTranslateY.toFixed(1)}px)`;
+      this.servicesContainer.style.pointerEvents = finalServicesAlpha > 0.25 ? 'auto' : 'none';
+    }
+
+    // 4. Subtle dark overlay on background when services are revealed, dissolving to 100% black space for Portfolio
     const overlay = this.sectionElement.querySelector('#storyImageOverlay') as HTMLElement | null;
     if (overlay) {
-      const dimFactor = Math.max(0, Math.min(0.55, (progress - P_SERVICES_START) * (isMobile ? 2.8 : 2.2)));
-      overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimFactor.toFixed(3)})`;
+      const baseDim = Math.max(0, Math.min(0.55, (progress - P_SERVICES_START) * (isMobile ? 2.8 : 2.2)));
+      // Seamlessly transition background to 100% black (#000000) during exit so Portfolio Universe emerges out of pure space
+      const finalDim = Math.min(1.0, baseDim + exitFactor * (1.0 - baseDim));
+      overlay.style.backgroundColor = `rgba(0, 0, 0, ${finalDim.toFixed(3)})`;
     }
 
     // 5. Floating WhatsApp Cart Bar visibility linked to progress and section boundaries
     if (this.waCartBar && this.selectedServiceKey) {
       const rect = this.sectionElement.getBoundingClientRect();
       const isInsideServicesSection = rect.bottom > 80 && rect.top < window.innerHeight;
-      if (progress >= P_SERVICES_START && isInsideServicesSection) {
+      const isBeforeExitComplete = progress < (P_EXIT_START + (1.0 - P_EXIT_START) * 0.75);
+      if (progress >= P_SERVICES_START && isBeforeExitComplete && isInsideServicesSection) {
         this.waCartBar.classList.add('visible');
       } else {
         this.waCartBar.classList.remove('visible');
