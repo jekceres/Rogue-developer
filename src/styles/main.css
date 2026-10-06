@@ -38,10 +38,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  overscroll-behavior: none;
-  overscroll-behavior-y: none;
-  overscroll-behavior-x: none;
+  overflow-x: clip;
 }
 
 body {
@@ -49,10 +46,7 @@ body {
   background-color: #000000;
   color: var(--text-white);
   line-height: 1.5;
-  overflow-x: hidden;
-  overscroll-behavior: none;
-  overscroll-behavior-y: none;
-  overscroll-behavior-x: none;
+  overflow-x: clip;
   position: relative;
 }
 
