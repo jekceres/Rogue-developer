@@ -236,6 +236,8 @@ export interface TranslationDictionary {
     submitBtnText: string;
     submitHint: string;
     toastSent: string;
+    toastOpenWa: string;
+    toastFallbackHint: string;
   };
   footer: {
     brandWordmark: string;

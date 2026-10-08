@@ -237,6 +237,8 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       submitBtnText: 'Transmit via WhatsApp',
       submitHint: 'Direct end-to-end encrypted dispatch to WhatsApp',
       toastSent: '✓ Transmission compiled and launched to WhatsApp!',
+      toastOpenWa: 'Open WhatsApp Directly →',
+      toastFallbackHint: 'If WhatsApp did not open automatically, tap the button above.',
     },
     footer: {
       brandWordmark: 'ROGUE',
@@ -494,6 +496,8 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       submitBtnText: 'Transmitir por WhatsApp',
       submitHint: 'Transmisión cifrada de extremo a extremo vía WhatsApp',
       toastSent: '✓ ¡Transmisión compilada y enviada a WhatsApp!',
+      toastOpenWa: 'Abrir WhatsApp directamente →',
+      toastFallbackHint: 'Si WhatsApp no se abrió automáticamente, toca el botón de arriba.',
     },
     footer: {
       brandWordmark: 'ROGUE',
@@ -751,6 +755,8 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       submitBtnText: 'Transmettre via WhatsApp',
       submitHint: 'Transmission chiffrée de bout en bout via WhatsApp',
       toastSent: '✓ Transmission compilée et lancée sur WhatsApp !',
+      toastOpenWa: 'Ouvrir WhatsApp directement →',
+      toastFallbackHint: 'Si WhatsApp ne s’est pas ouvert automatiquement, appuyez ci-dessus.',
     },
     footer: {
       brandWordmark: 'ROGUE',
@@ -1008,6 +1014,8 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
       submitBtnText: 'Transmitir pelo WhatsApp',
       submitHint: 'Transmissão segura criptografada via WhatsApp',
       toastSent: '✓ Transmissão compilada e enviada para o WhatsApp!',
+      toastOpenWa: 'Abrir o WhatsApp diretamente →',
+      toastFallbackHint: 'Se o WhatsApp não abriu automaticamente, toque no botão acima.',
     },
     footer: {
       brandWordmark: 'ROGUE',

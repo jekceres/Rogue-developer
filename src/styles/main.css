@@ -5315,13 +5315,105 @@ section h2:not(.gdpr-title),
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.35);
   color: #fca5a5;
+  animation: feedbackFadeIn 0.25s ease-out forwards;
 }
 
 .form-status-feedback.success {
   display: block;
-  background: rgba(37, 211, 102, 0.12);
+  background: rgba(37, 211, 102, 0.08);
   border: 1px solid rgba(37, 211, 102, 0.35);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
   color: #86efac;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.12);
+  backdrop-filter: blur(10px);
+  animation: feedbackFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes feedbackFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feedback-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.feedback-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.feedback-status-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #000;
+  font-weight: 900;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+.feedback-status-text {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #86efac;
+  letter-spacing: 0.02em;
+}
+
+.feedback-action-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.btn-toast-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #25d366;
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-toast-wa:hover {
+  background: #20ba5a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+  color: #ffffff;
+}
+
+.toast-wa-svg {
+  flex-shrink: 0;
+}
+
+.feedback-sub-hint {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: monospace;
+  letter-spacing: 0.02em;
 }
 
 /* Terminal Bottom Decal */

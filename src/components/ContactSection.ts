@@ -413,42 +413,127 @@ export class ContactSection {
     const nameInput = form.querySelector('#contactSenderName') as HTMLInputElement | null;
     const contactInput = form.querySelector('#contactSenderEmail') as HTMLInputElement | null;
     const messageInput = form.querySelector('#contactMessage') as HTMLTextAreaElement | null;
-    const feedback = this.sectionElement.querySelector('#formStatusFeedback');
+    const feedback = this.sectionElement.querySelector('#formStatusFeedback') as HTMLElement | null;
 
     const name = nameInput?.value.trim() || '';
     const contact = contactInput?.value.trim() || '';
     const message = messageInput?.value.trim() || '';
 
+    const dict = i18n.getDictionary();
+    const t = dict.contact;
+    const lang = i18n.getLanguage();
+
     if (!name || !contact || !message) {
       if (feedback) {
         feedback.className = 'form-status-feedback error';
-        feedback.textContent = 'Please fill out all required fields before transmitting.';
+        const errorMsg = lang === 'es'
+          ? 'Por favor completa todos los campos obligatorios antes de transmitir.'
+          : 'Please fill out all required fields before transmitting.';
+        feedback.textContent = errorMsg;
       }
+      if (!name && nameInput) nameInput.focus();
+      else if (!contact && contactInput) contactInput.focus();
+      else if (!message && messageInput) messageInput.focus();
       return;
     }
 
-    const dict = i18n.getDictionary();
-    const t = dict.contact;
     const serviceName = this.getServiceTitle(this.selectedServiceKey, t);
 
-    // Format WhatsApp Payload
-    const payload = 
+    // Format WhatsApp Payload localized
+    let payload = '';
+    if (lang === 'es') {
+      payload = 
+`*Nueva Transmisión de Proyecto vía ROGUE:*
+• *Operador / Nombre:* ${name}
+• *Contacto / Canal:* ${contact}
+• *Arquitectura Objetivo:* ${serviceName}
+• *Brief del Proyecto:*
+${message}`;
+    } else if (lang === 'fr') {
+      payload = 
+`*Nouvelle Transmission de Projet via ROGUE:*
+• *Opérateur / Nom:* ${name}
+• *Contact / Canal:* ${contact}
+• *Architecture Ciblée:* ${serviceName}
+• *Brief de Mission:*
+${message}`;
+    } else if (lang === 'pt') {
+      payload = 
+`*Nova Transmissão de Projeto via ROGUE:*
+• *Operador / Nome:* ${name}
+• *Contato / Canal:* ${contact}
+• *Arquitetura Alvo:* ${serviceName}
+• *Briefing do Projeto:*
+${message}`;
+    } else {
+      payload = 
 `*New Project Transmission via ROGUE:*
 • *Operator / Name:* ${name}
 • *Contact / Channel:* ${contact}
 • *Target Architecture:* ${serviceName}
 • *Mission Brief:*
 ${message}`;
+    }
 
     const waUrl = `https://wa.me/${this.WHATSAPP_PHONE}?text=${encodeURIComponent(payload)}`;
 
+    // Show interactive success card with direct, unblockable fallback action
     if (feedback) {
       feedback.className = 'form-status-feedback success';
-      feedback.textContent = t.toastSent;
+      feedback.innerHTML = `
+        <div class="feedback-card-inner">
+          <div class="feedback-badge-row">
+            <span class="feedback-status-check">✓</span>
+            <span class="feedback-status-text">${t.toastSent}</span>
+          </div>
+          <div class="feedback-action-row">
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-toast-wa" id="btnToastWaOpen">
+              <svg class="toast-wa-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17.47 14.39C17.19 14.25 15.84 13.59 15.59 13.49C15.34 13.4 15.15 13.35 14.97 13.63C14.78 13.91 14.25 14.53 14.09 14.72C13.93 14.91 13.77 14.93 13.5 14.79C13.22 14.65 12.32 14.36 11.26 13.41C10.43 12.67 9.87 11.76 9.71 11.48C9.55 11.2 9.69 11.05 9.83 10.91C9.96 10.78 10.11 10.59 10.24 10.42C10.38 10.26 10.43 10.14 10.52 9.96C10.61 9.77 10.57 9.61 10.5 9.47C10.43 9.33 9.88 7.97 9.65 7.41C9.42 6.87 9.19 6.94 9.03 6.93C8.87 6.92 8.68 6.92 8.49 6.92C8.3 6.92 8 6.99 7.74 7.27C7.49 7.55 6.76 8.23 6.76 9.6C6.76 10.98 7.76 12.31 7.9 12.5C8.04 12.69 9.88 15.52 12.69 16.73C15.5 17.94 15.5 17.54 16.01 17.49C16.52 17.44 17.64 16.82 17.87 16.18C18.1 15.53 18.1 14.98 18.03 14.87C17.96 14.75 17.75 14.53 17.47 14.39Z" fill="#ffffff"/>
+              </svg>
+              <span>${t.toastOpenWa}</span>
+            </a>
+            <span class="feedback-sub-hint">${t.toastFallbackHint}</span>
+          </div>
+        </div>
+      `;
+      try {
+        feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch {}
     }
 
-    // Launch WhatsApp
-    window.open(waUrl, '_blank', 'noopener,noreferrer');
+    // Launch WhatsApp reliably across all platforms:
+    // 1. Programmatic anchor click with target="_blank" and rel="noopener noreferrer"
+    let opened = false;
+    try {
+      const link = document.createElement('a');
+      link.href = waUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.style.position = 'fixed';
+      link.style.left = '-9999px';
+      link.style.top = '-9999px';
+      link.style.opacity = '0';
+      link.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        try { link.remove(); } catch {}
+      }, 300);
+      opened = true;
+    } catch (err) {
+      console.warn('Programmatic anchor navigation error:', err);
+    }
+
+    // 2. Direct window.open fallback without 3rd parameter windowFeatures
+    if (!opened) {
+      try {
+        window.open(waUrl, '_blank');
+      } catch (err) {
+        console.warn('window.open fallback error:', err);
+      }
+    }
   }
 
   private updateTranslations(dict: TranslationDictionary): void {
@@ -493,6 +578,13 @@ ${message}`;
     if (serviceCatLabel) serviceCatLabel.textContent = `${t.serviceCategoryLabel}:`;
     if (submitBtnText) submitBtnText.textContent = t.submitBtnText;
     if (submitHint) submitHint.textContent = t.submitHint;
+
+    const feedbackMsg = this.sectionElement.querySelector('.feedback-status-text');
+    if (feedbackMsg) feedbackMsg.textContent = t.toastSent;
+    const toastBtnSpan = this.sectionElement.querySelector('#btnToastWaOpen span');
+    if (toastBtnSpan) toastBtnSpan.textContent = t.toastOpenWa;
+    const toastSubHint = this.sectionElement.querySelector('.feedback-sub-hint');
+    if (toastSubHint) toastSubHint.textContent = t.toastFallbackHint;
 
     const nameInput = this.sectionElement.querySelector('#contactSenderName') as HTMLInputElement | null;
     const contactInput = this.sectionElement.querySelector('#contactSenderEmail') as HTMLInputElement | null;
